@@ -1,7 +1,15 @@
 const employeerDetails = require("../model/employeerDetails");
 const Jobs = require("../model/jobs");
-const GetAllJobs = (req, res) => {
-  res.send("get all jobs posted");
+const GetAllJobs = async (req, res) => {
+  const { userid } = req.headers;
+  // console.log(userid);
+  const { _id: creatorid } = await employeerDetails.findOne({ userid: userid });
+  // console.log(creatorid);
+  const jobsData = await Jobs.find({ creatorid: creatorid });
+  // console.log(jobsData);
+  if (!jobsData) return res.status(404).json({ msg: "no jobs data to show" });
+
+  res.status(200).json(jobsData);
 };
 const GetJob = async (req, res) => {
   const { jobid } = req.params;

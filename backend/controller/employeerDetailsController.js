@@ -2,9 +2,9 @@ const employeerDetails = require("../model/employeerDetails");
 
 const GetEmployeerDetails = async (req, res) => {
   const { userid } = req.headers;
-  const details = await employeerDetails.findOne({ userid: userid });
+  const details = await employeerDetails.find({ userid: userid });
   if (!details) {
-    res.status(404).json("No user found");
+    return res.status(404).json("No user found");
   }
   res.status(200).json(details);
 };

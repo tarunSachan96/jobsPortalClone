@@ -28,7 +28,7 @@ const EmployeerDetailsSchema = new mongoose.Schema(
       unique: true,
     },
     jobsid: [{
-      type: [mongoose.Schema.Types.ObjectId],
+      type: mongoose.Schema.Types.ObjectId,
       ref: "Jobs",
     }],
   },
