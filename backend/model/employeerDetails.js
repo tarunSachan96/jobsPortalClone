@@ -20,17 +20,17 @@ const EmployeerDetailsSchema = new mongoose.Schema(
     contact: {
       type: String,
       required: [false, "Please provide mobile number"],
-      maxlength: 10,
+      maxlength : 10,
     },
     userid: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       unique: true,
     },
-    jobsid: {
+    jobsid: [{
       type: [mongoose.Schema.Types.ObjectId],
       ref: "Jobs",
-    },
+    }],
   },
   { timestamps: true }
 );

@@ -6,7 +6,7 @@ const mongoose = require("mongoose");
 
 const userRoutes = require("./route/user");
 const adminRoutes = require("./route/admin");
-// const tasksRoutes = require("./route/task");
+const jobsRoutes = require("./route/jobs");
 const jwtAuthentication = require("./middleware/jwtAuthentication");
 const connectDB = require("./db/connect");
 app.get("/api/v1/", (req, res) => {
@@ -14,7 +14,9 @@ app.get("/api/v1/", (req, res) => {
 });
 
 app.use("/api/v1/user", userRoutes);
-app.use("/api/v1/user/admin", adminRoutes);
+app.use("/api/v1/user/admin", jwtAuthentication,adminRoutes);
+app.use("/api/v1/user/admin", jwtAuthentication,jobsRoutes);
+
 // app.use("/task", jwtAuthentication, tasksRoutes);
 // app.use("/task", tasksRoutes);
 

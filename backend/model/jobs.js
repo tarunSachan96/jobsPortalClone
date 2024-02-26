@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const JobsSchema = new mongoose.Schema(
   {
-    description: {
+    title: {
       type: String,
       required: [true, "Please provide description name"],
       maxlength: 50,
@@ -14,18 +14,21 @@ const JobsSchema = new mongoose.Schema(
     },
     pay: {
       type: Number,
+      maxlength: 2,
     },
-    skills: {
-      type: String,
-      enum: {
-        values: ["Node", "React", "Angular", "Java", "C++", "Python"],
-        // message: "{VALUE} is not supported",
+    skills: [
+      {
+        type: String,
+        enum: {
+          values: ["Node", "React", "Angular", "Java", "C++", "Python"],
+          // message: "{VALUE} is not supported",
+        },
       },
-    },
+    ],
 
-    userid: {
+    creatorid: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: "EmployeerDetails",
     },
   },
   { timestamps: true }
