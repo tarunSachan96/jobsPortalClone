@@ -30,7 +30,7 @@ const applyTargetedJob = async (req, res) => {
   if (!validJobid) return res.status(404).send("invalid job id");
   const userJobs = await userDetails.findOneAndUpdate(
     { userid: userid },
-    { appliedjobs: validJobid._id }
+    { $push: { appliedjobs: validJobid._id } }
   );
   if (!userJobs) console.log("unable to add job");
 
@@ -43,11 +43,16 @@ const deleteAppliedJob = async (req, res) => {
   const UserDetails = await userDetails.findOne({ userid: req.headers.userid });
   const validJobid = await Jobs.findById({ _id: jobid });
   if (!validJobid) return res.status(404).send("invalid job id");
+
+  const userJob = await userDetails.findOneAndUpdate(
+    { userid: userid },
+    { $pull: { appliedjobs: validJobid._id } }
+  );
   // const userJobs = await userDetails.findOneAndUpdate(
   //   { userid: userid },
   //   { appliedJobs:[]}
   // );
-  // if (!userJobs) console.log("unable to delete applied job");
+  if (!userJob) console.log("unable to delete applied job");
 
   res.status(201).send(`Targetted job not deleted with jobid ${jobid}`);
 };
