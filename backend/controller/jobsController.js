@@ -66,11 +66,24 @@ const EditJob = async (req, res) => {
 };
 const DeleteJob = async (req, res) => {
   const { jobid } = req.params;
-  // console.log(jobid);
-  const temp = await Jobs.findOneAndDelete({ _id: jobid });
-  if (!temp) return res.status(404).json({ msg: "Unable to delete" });
+  const { userid } = req.headers;
+  console.log("jobid:", jobid);
+  const creator = await employeerDetails.findOne({ userid: userid });
+  console.log(creator);
+  if (!creator) return res.status(404).send("Unauthorized user");
+  const validJobid = await Jobs.findById({ _id: jobid });
+  if (!validJobid) return res.status(404).send("invalid job id");
+  // console.log(validJobid)
+  const jobdelete = await Jobs.findOneAndDelete({ _id: validJobid._id });
+  if (!jobdelete) return res.status(404).send("Unable to delete job");
 
-  res.status(200).json({ msg: "job post deleted successfully!!!" });
+  const cleanJobsPostedArray = await employeerDetails.findOneAndUpdate(
+    { userid: userid },
+    { $pull: { jobsid: validJobid._id } }
+  );
+  if (!cleanJobsPostedArray) return res.status(404).send("failed to clean job posted array");
+
+  res.status(200).json({ msg: "job post deleted and array cleaned successfully!!!" });
 };
 
 module.exports = {
