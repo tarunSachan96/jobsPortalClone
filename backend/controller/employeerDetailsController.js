@@ -2,7 +2,7 @@ const employeerDetails = require("../model/employeerDetails");
 
 const GetEmployeerDetails = async (req, res) => {
   const { userid } = req.headers;
-  const details = await employeerDetails.find({ userid: userid });
+  const details = await employeerDetails.find({ userid: userid }).populate("jobsid");
   if (!details) {
     return res.status(404).json("No user found");
   }

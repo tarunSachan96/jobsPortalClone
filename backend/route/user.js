@@ -16,6 +16,6 @@ router
   .get(GetDetails)
   .post(AddUserDetails)
   .patch(UpdateDetails);
-router.route("/applies/:id").get(Applies).post(Applies);
+// router.route("/applies/:id").get(Applies).post(Applies);
 
 module.exports = router;
