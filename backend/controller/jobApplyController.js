@@ -1,5 +1,7 @@
 const userDetails = require("../model/userDetails");
+const employeerDetails = require("../model/employeerDetails");
 const Jobs = require("../model/jobs");
+const { findOne } = require("../model/employeerDetails");
 const getAllAppliedJobs = async (req, res) => {
   const useridheader = req.headers.userid;
   const id = req.params.id;
@@ -26,16 +28,31 @@ const applyTargetedJob = async (req, res) => {
   const { userid } = req.headers;
   //   console.log("jobid:", jobid, "userid", userid);
   //   const UserDetails = await userDetails.findOne({ userid: req.headers.userid });
-  const validJobid = await Jobs.findById({ _id: jobid });
+  const validJobid = await Jobs.findById({ _id: jobid }).populate();
+  // console.log(validJobid);
+
   if (!validJobid) return res.status(404).send("invalid job id");
   const userJobs = await userDetails.findOneAndUpdate(
     { userid: userid },
-    { $push: { appliedjobs: validJobid._id } }
+    { $addToSet : { appliedjobs: validJobid._id } }
   );
-  if (!userJobs) console.log("unable to add job");
+
+  if (!userJobs) return res.status(404).json("unable to add job errror!!!");
+
+  const application = await employeerDetails.findOneAndUpdate(
+    { _id: validJobid.creatorid },
+    { $push: { candidatesid: userid } }
+  );
+  console.log("creator id:", validJobid.creatorid);
+  // const application = await employeerDetails.findOne({
+  //   _id: validJobid.creatorid,
+  // });
+  console.log(application);
+  if (!application) return res.send("unable to update candidate array");
 
   res.status(201).send(`Targetted job applied with jobid ${jobid}`);
 };
+
 const deleteAppliedJob = async (req, res) => {
   const { jobid } = req.params;
   const { userid } = req.headers;
@@ -48,6 +65,12 @@ const deleteAppliedJob = async (req, res) => {
     { userid: userid },
     { $pull: { appliedjobs: validJobid._id } }
   );
+
+  const application = await employeerDetails.findOneAndUpdate(
+    { _id: validJobid.creatorid },
+    { $pull: { candidatesid: userid } }
+  );
+  if (!application) return res.send("unable to update candidate array");
   // const userJobs = await userDetails.findOneAndUpdate(
   //   { userid: userid },
   //   { appliedJobs:[]}

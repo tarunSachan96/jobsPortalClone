@@ -50,10 +50,11 @@ const UserDetailsSchema = new mongoose.Schema({
     ref: "User",
     unique: true,
   },
-  appliedjobs:[
+  appliedjobs: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Jobs",
+      unique: true,
     },
   ],
 });
