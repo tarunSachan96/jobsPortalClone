@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+var cors = require("cors");
 require("dotenv").config();
 app.use(express.json());
 const mongoose = require("mongoose");
@@ -13,7 +14,7 @@ const connectDB = require("./db/connect");
 app.get("/api/v1/", (req, res) => {
   res.send("Hello World!");
 });
-
+app.use(cors());
 app.use("/api/v1/user", userRoutes);
 app.use("/api/v1/user/admin", jwtAuthentication, adminRoutes);
 app.use("/api/v1/user/admin", jwtAuthentication, jobsRoutes);
