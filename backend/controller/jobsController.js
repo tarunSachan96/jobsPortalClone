@@ -36,7 +36,7 @@ const AddJob = async (req, res) => {
   });
   const employerJobsPost = await employeerDetails.findOneAndUpdate(
     { userid: userid },
-    { jobsid: jobadded._id }
+    { $push: { jobsid: jobadded._id } }
   );
   console.log(employerJobsPost);
   if (!jobadded) return res.status(404).send("failed to create job");
