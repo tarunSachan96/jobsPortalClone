@@ -1,7 +1,10 @@
 const UserDetails = require("../model/userDetails");
 const GetDetails = async (req, res) => {
   const { userid } = req.headers;
-  const details = await UserDetails.findOne({ userid: userid });
+
+  const details = await UserDetails.findOne({ userid: userid }).populate(
+    "appliedjobs"
+  );
   if (!details) {
     return res.status(404).json({ msg: "no user with details found !!!" });
   }
@@ -40,6 +43,9 @@ const UpdateDetails = async (req, res) => {
       runValidators: true,
     }
   );
+  console.log("user details update function called");
+  
+  console.log("result updated", updatedResult);
   if (!updatedResult)
     return res.ststus(404).json({ msg: "unable to edit user!!!" });
 

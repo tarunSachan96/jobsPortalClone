@@ -9,7 +9,7 @@ const getAllAppliedJobs = async (req, res) => {
     .findOne({ userid: req.headers.userid })
     .populate("appliedjobs");
   console.log(UserDetails.appliedjobs);
-  res.send("All applied jobs");
+  res.send(UserDetails.appliedjobs);
 };
 const getTargetedJob = async (req, res) => {
   const { jobid } = req.params;
@@ -34,14 +34,14 @@ const applyTargetedJob = async (req, res) => {
   if (!validJobid) return res.status(404).send("invalid job id");
   const userJobs = await userDetails.findOneAndUpdate(
     { userid: userid },
-    { $addToSet : { appliedjobs: validJobid._id } }
+    { $addToSet: { appliedjobs: validJobid._id } }
   );
 
   if (!userJobs) return res.status(404).json("unable to add job errror!!!");
-
+  console.log(userJobs);
   const application = await employeerDetails.findOneAndUpdate(
     { _id: validJobid.creatorid },
-    { $push: { candidatesid: userid } }
+    { $push: { candidatesid: userJobs._id } } //ye baad me dala hai original-{ $push: { candidatesid: userid } }
   );
   console.log("creator id:", validJobid.creatorid);
   // const application = await employeerDetails.findOne({
