@@ -5,7 +5,10 @@ const GetAllJobs = async (req, res) => {
   // console.log(userid);
   const { _id: creatorid } = await employeerDetails.findOne({ userid: userid });
   // console.log(creatorid);
-  const jobsData = await Jobs.find({ creatorid: creatorid },{__v:0,candidatesid:0});
+  const jobsData = await Jobs.find(
+    { creatorid: creatorid },
+    { __v: 0, candidatesid: 0 }
+  );
   // console.log(jobsData);
   if (!jobsData) return res.status(404).json({ msg: "no jobs data to show" });
 
@@ -15,9 +18,10 @@ const GetAllJobs = async (req, res) => {
 const GetJob = async (req, res) => {
   const { jobid } = req.params;
   console.log(jobid);
-  const jobData = await Jobs.findOne({ _id: jobid }).populate({
-    path:"candidatesid",
-    model:"userDetails"
+  const jobData = await Jobs.findOne({ _id: jobid },{__v:0}).populate({
+    path: "candidatesid",
+    model: "User",
+    select: "email -_id",
   });
   if (!jobData)
     return res.status(404).json({ msg: "Unable to find requested job" });
@@ -86,9 +90,12 @@ const DeleteJob = async (req, res) => {
     { userid: userid },
     { $pull: { jobsid: validJobid._id } }
   );
-  if (!cleanJobsPostedArray) return res.status(404).send("failed to clean job posted array");
+  if (!cleanJobsPostedArray)
+    return res.status(404).send("failed to clean job posted array");
 
-  res.status(200).json({ msg: "job post deleted and array cleaned successfully!!!" });
+  res
+    .status(200)
+    .json({ msg: "job post deleted and array cleaned successfully!!!" });
 };
 
 module.exports = {
