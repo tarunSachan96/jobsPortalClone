@@ -6,7 +6,7 @@ const privatekey = process.env.PRIVATE_KEY;
 
 const Login = async (req, res) => {
   const { email, password } = req.body;
-  console.log("email=", email, "password:", password);
+  // console.log("email=", email, "password:", password);
   const existingUser = await User.findOne({ email });
 
   if (!existingUser) {
@@ -36,12 +36,16 @@ const Login = async (req, res) => {
     message: "login success",
     token: token,
   });
-
 };
 
 const SignUp = async (req, res) => {
   const { email, password, isAdmin } = req.body;
   // console.log(email, password);
+  const existingUser = await User.findOne({ email });
+  if (existingUser)
+    return res
+      .status(404)
+      .send(`user exists with email:"${email}" please use different email !!`);
 
   const hashed_user_password = await bcrypt.hash(password, saltRounds);
   const user = await User.create({
@@ -49,7 +53,7 @@ const SignUp = async (req, res) => {
     isAdmin: isAdmin,
     password: hashed_user_password,
   });
-  // console.log(user);
+  console.log("user:", user);
   const token = jwt.sign(
     {
       email: email,
