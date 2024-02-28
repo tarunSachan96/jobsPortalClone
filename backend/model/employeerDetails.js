@@ -33,13 +33,13 @@ const EmployeerDetailsSchema = new mongoose.Schema({
       unique: true,
     },
   ],
-  candidatesid: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-      unique: true,
-    },
-  ],
+  // candidatesid: [
+  //   {
+  //     type: mongoose.Schema.Types.ObjectId,
+  //     ref: "User",
+  //     unique: true,
+  //   },
+  // ],
 });
 
 module.exports = mongoose.model("employeerDetails", EmployeerDetailsSchema);

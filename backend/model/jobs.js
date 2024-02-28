@@ -30,6 +30,13 @@ const JobsSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "EmployeerDetails",
     },
+    candidatesid: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        unique: true,
+      },
+    ],
   },
   { timestamps: true }
 );
