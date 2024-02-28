@@ -9,8 +9,8 @@ const getAllAppliedJobs = async (req, res) => {
   const id = req.params.id;
   const UserDetails = await userDetails
     .findOne({ userid: req.headers.userid })
-    .populate("appliedjobs");
-  console.log(UserDetails.appliedjobs);
+    .populate("appliedjobs", { candidatesid: 0, updatedAt: 0 });
+  console.log("Applied jobs:", UserDetails.appliedjobs);
   res.send(UserDetails.appliedjobs);
 };
 const getTargetedJob = async (req, res) => {
@@ -19,8 +19,17 @@ const getTargetedJob = async (req, res) => {
   //   console.log("jobid:", jobid, "userid", userid);
   //   const UserDetails = await userDetails.findOne({ userid: req.headers.userid });
   const validJobid = await Jobs.findById({ _id: jobid });
+
   if (!validJobid) return res.status(404).send("invalid job id");
-  const Job = await Jobs.findOne({ _id: jobid });
+
+  const Job = await Jobs.find(
+    { _id: jobid },
+    {
+      candidatesid: 0,
+      updatedAt: 0,
+      __v: 0,
+    }
+  );
   if (!Job) console.log("unable to add job");
 
   res.status(200).json(Job);
