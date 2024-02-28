@@ -3,7 +3,7 @@ const GetDetails = async (req, res) => {
   const { userid } = req.headers;
 
   const details = await UserDetails.findOne({ userid: userid }).populate(
-    "appliedjobs"
+    {path:"appliedjobs"}
   );
   if (!details) {
     return res.status(404).json({ msg: "no user with details found !!!" });

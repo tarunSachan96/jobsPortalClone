@@ -2,10 +2,22 @@ const employeerDetails = require("../model/employeerDetails");
 
 const GetEmployeerDetails = async (req, res) => {
   const { userid } = req.headers;
-  const details = await employeerDetails
-    .find({ userid: userid })
-    .populate("jobsid")
-    // .populate("candidatesid");
+  // const details = await employeerDetails
+  //   .find({ userid: userid })
+  //   .populate("jobsid", { __v: 0, creatorid: 0 });
+  const details = await employeerDetails.find({ userid: userid }).populate({
+    path: "jobsid",
+    model: "Jobs",
+    select: "-userid -__v",
+    populate: [
+      {
+        path: "candidatesid",
+        model: "User",
+        select: "email",
+      },
+    ],
+  });
+  // .populate("candidatesid");
   if (!details) {
     return res.status(404).json("No user found");
   }

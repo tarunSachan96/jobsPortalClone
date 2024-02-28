@@ -9,7 +9,7 @@ const getAllAppliedJobs = async (req, res) => {
   const id = req.params.id;
   const UserDetails = await userDetails
     .findOne({ userid: req.headers.userid })
-    .populate("appliedjobs", { candidatesid: 0, updatedAt: 0 });
+    .populate("appliedjobs", { candidatesid: 0, updatedAt: 0, __v: 0 });
   console.log("Applied jobs:", UserDetails.appliedjobs);
   res.send(UserDetails.appliedjobs);
 };
@@ -30,7 +30,7 @@ const getTargetedJob = async (req, res) => {
       __v: 0,
     }
   );
-  if (!Job) console.log("unable to add job");
+  if (!Job) res.status(404).send("unable to add job");
 
   res.status(200).json(Job);
 };
