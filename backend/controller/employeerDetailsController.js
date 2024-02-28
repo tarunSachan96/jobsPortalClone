@@ -53,7 +53,7 @@ const EditEmployeerDetails = async (req, res) => {
     }
   );
   if (!update) return res.status(404).json({ msg: "unable to update details" });
-  res.send("edit employeer details");
+  res.send("edited employeer details");
 };
 
 module.exports = {

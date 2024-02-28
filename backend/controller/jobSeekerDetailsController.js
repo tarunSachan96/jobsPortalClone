@@ -2,9 +2,16 @@ const UserDetails = require("../model/userDetails");
 const GetDetails = async (req, res) => {
   const { userid } = req.headers;
 
-  const details = await UserDetails.findOne({ userid: userid }).populate(
-    {path:"appliedjobs"}
-  );
+  const details = await UserDetails.findOne({ userid: userid }).populate({
+    path: "appliedjobs",
+    model: "Jobs",
+    select: "-candidatesid -__v -updatedAt",
+    populate: {
+      path: "creatorid",
+      model: "employeerDetails",
+      select:"-userid -jobsid -updatedAt -_id -__v"
+    },
+  });
   if (!details) {
     return res.status(404).json({ msg: "no user with details found !!!" });
   }
@@ -44,12 +51,12 @@ const UpdateDetails = async (req, res) => {
     }
   );
   console.log("user details update function called");
-  
+
   console.log("result updated", updatedResult);
   if (!updatedResult)
     return res.ststus(404).json({ msg: "unable to edit user!!!" });
 
-  res.status(202).json({ updatedResult });
+  res.status(202).send("user details added");
 };
 const Applies = (req, res) => {
   res.send("user applies details");

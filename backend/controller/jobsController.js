@@ -5,21 +5,26 @@ const GetAllJobs = async (req, res) => {
   // console.log(userid);
   const { _id: creatorid } = await employeerDetails.findOne({ userid: userid });
   // console.log(creatorid);
-  const jobsData = await Jobs.find({ creatorid: creatorid });
+  const jobsData = await Jobs.find({ creatorid: creatorid },{__v:0,candidatesid:0});
   // console.log(jobsData);
   if (!jobsData) return res.status(404).json({ msg: "no jobs data to show" });
 
   res.status(200).json(jobsData);
 };
+
 const GetJob = async (req, res) => {
   const { jobid } = req.params;
   console.log(jobid);
-  const jobData = await Jobs.findOne({ _id: jobid });
+  const jobData = await Jobs.findOne({ _id: jobid }).populate({
+    path:"candidatesid",
+    model:"userDetails"
+  });
   if (!jobData)
     return res.status(404).json({ msg: "Unable to find requested job" });
 
   res.status(200).json(jobData);
 };
+
 const AddJob = async (req, res) => {
   const { title, location, pay, skills } = req.body;
   const { userid } = req.headers;
