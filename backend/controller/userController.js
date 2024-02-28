@@ -1,5 +1,6 @@
 const bcrypt = require("bcrypt");
 const User = require("../model/user");
+const { ReasonPhrases, StatusCodes } = require("http-status-codes");
 const saltRounds = 10;
 var jwt = require("jsonwebtoken");
 const privatekey = process.env.PRIVATE_KEY;
@@ -10,7 +11,9 @@ const Login = async (req, res) => {
   const existingUser = await User.findOne({ email });
 
   if (!existingUser) {
-    return res.status(404).send("no used found with email");
+    return res
+      .status(StatusCodes.PRECONDITION_FAILED)
+      .send("no used found with email");
   }
   console.log(existingUser);
 
@@ -44,7 +47,7 @@ const SignUp = async (req, res) => {
   const existingUser = await User.findOne({ email });
   if (existingUser)
     return res
-      .status(404)
+      .status(StatusCodes.PRECONDITION_FAILED)
       .send(`user exists with email:"${email}" please use different email !!`);
 
   const hashed_user_password = await bcrypt.hash(password, saltRounds);

@@ -16,20 +16,31 @@ const UserDetailsSchema = new mongoose.Schema({
     required: [true, "Please provide college name"],
     maxlength: 100,
   },
-  degree: {
-    type: String,
-    enum: {
-      values: ["B.Tech", "M.Tech", "B.Com", "M.Com", "MA", "BA", "B.Sc", "NA"],
-      // message: "{VALUE} is not supported",
+  degree: [
+    {
+      type: String,
+      enum: {
+        values: [
+          "B.Tech",
+          "M.Tech",
+          "B.Com",
+          "M.Com",
+          "MA",
+          "BA",
+          "B.Sc",
+          "NA",
+        ],
+        // message: "{VALUE} is not supported",
+      },
     },
-  },
-  skills: {
+  ],
+  skills: [{
     type: String,
     enum: {
       values: ["Node", "React", "Angular", "Java", "C++", "Python"],
       // message: "{VALUE} is not supported",
     },
-  },
+  }],
   address: {
     type: String,
     required: [true, "Please provide adress"],
