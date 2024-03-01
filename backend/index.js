@@ -4,7 +4,11 @@ const cors = require("cors");
 require("dotenv").config();
 const app = express();
 app.use(express.json());
-app.use(cors());
+const corsOptions = {
+  exposedHeaders: ["Authorization", "userid", "isadmin"],
+};
+
+app.use(cors(corsOptions));
 
 const userRoutes = require("./route/user");
 const adminRoutes = require("./route/admin");
@@ -16,7 +20,6 @@ const connectDB = require("./db/connect");
 app.get("/api/v1/", (req, res) => {
   res.send("Hello World!");
 });
-
 
 //routes
 app.use("/api/v1/user", userRoutes);

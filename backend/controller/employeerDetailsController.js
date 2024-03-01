@@ -35,6 +35,7 @@ const AddEmployeerDetails = (req, res) => {
     userid,
   });
   // console.log(added);
+  if(!added)return res.statuse(404).send("failed to add details!!!")
   res.status(201).send("employeer details added");
 };
 const EditEmployeerDetails = async (req, res) => {

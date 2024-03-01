@@ -27,18 +27,20 @@ const Login = async (req, res) => {
     {
       email: email,
       user: existingUser._id,
-      exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 365,
     },
-    privatekey
+    privatekey,
+    {
+      expiresIn: "365d", // expires in 365 days
+    }
   );
   // console.log("token : " + token);
   res.header("userid", `${existingUser._id}`);
   res.header("Authorization", `Bearer ${token}`);
+  res.header("isadmin", `${existingUser.isAdmin}`);
 
-  res.status(200).json({
-    message: "login success",
-    token: token,
-  });
+  res
+    .status(200)
+    .json({ email: email, password: password, token: token, isadmin: existingUser.isAdmin });
 };
 
 const SignUp = async (req, res) => {
@@ -61,15 +63,19 @@ const SignUp = async (req, res) => {
     {
       email: email,
       user: user._id,
-      exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 365,
     },
-    privatekey
+    privatekey,
+    {
+      expiresIn: "365d",
+    }
   );
   // console.log("token : " + token);
   res.header("Authorization", `Bearer ${token}`);
   res.header("userid", `${user._id}`);
-
-  res.status(201).json({ email: email, password: password, token: token });
+  res.header("isadmin", `${user.isAdmin}`);
+  res
+    .status(201)
+    .json({ email: email, password: password, token: token, isadmin: isAdmin });
 };
 
 module.exports = { Login, SignUp };
