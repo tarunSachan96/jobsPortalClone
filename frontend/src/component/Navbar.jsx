@@ -7,10 +7,11 @@ const Navbar = () => {
     <div className={classes.navigation}>
       <h1 className={classes.company}>Jobs Portal</h1>
       <div className={classes.links}>
-        <NavLink to="" activeClassName={classes.active}>
+        {/* <NavLink to="" activeClassName={classes.active}>
           Home
-        </NavLink>
+        </NavLink> */}
 
+        {!token && <NavLink to="/signup">SignUp</NavLink>}
         {!token && <NavLink to="/login">Login</NavLink>}
         {token && <NavLink to="/logout">Logout</NavLink>}
       </div>

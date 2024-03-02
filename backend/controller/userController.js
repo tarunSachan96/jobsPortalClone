@@ -12,15 +12,17 @@ const Login = async (req, res) => {
 
   if (!existingUser) {
     return res
-      .status(StatusCodes.PRECONDITION_FAILED)
-      .send("no used found with email");
+      .status(StatusCodes.UNAUTHORIZED)
+      .send("no used found with email or password");
   }
   // console.log(existingUser);
 
   const matched = await bcrypt.compare(password, existingUser.password);
 
   if (!matched) {
-    return res.send("wrong password entered please try again !!!");
+    return res
+      .status(StatusCodes.UNAUTHORIZED)
+      .send("wrong password entered please try again !!!");
   }
 
   const token = jwt.sign(
@@ -40,7 +42,12 @@ const Login = async (req, res) => {
 
   res
     .status(200)
-    .json({ email: email, password: password, token: token, isadmin: existingUser.isAdmin });
+    .json({
+      email: email,
+      password: password,
+      token: token,
+      isadmin: existingUser.isAdmin,
+    });
 };
 
 const SignUp = async (req, res) => {

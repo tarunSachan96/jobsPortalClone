@@ -5,6 +5,9 @@ const EmpNavbar = () => {
     <div className={classes.navigation}>
       {/* <h1 className={classes.company}>Jobs Portal</h1> */}
       <div className={classes.links}>
+        <NavLink to="dashboard" activeClassName={classes.active}>
+          Dashboard
+        </NavLink>
         <NavLink to="details" activeClassName={classes.active}>
           Details
         </NavLink>

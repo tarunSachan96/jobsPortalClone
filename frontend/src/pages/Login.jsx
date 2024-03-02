@@ -34,17 +34,29 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (ValidateForm()) {
-      const resp = await axios.post(
-        "http://localhost:3000/api/v1/user/login",
-        formData
-      );
-      // console.log(resp.headers);
-      const token = resp.headers.authorization.split(" ")[1];
-      const userid = resp.headers.userid;
-      const isadmin = resp.headers.isadmin;
-      setToken(token);
-      setUserid(userid);
-      setIsAdmin(isadmin);
+      try {
+        const resp = await axios.post(
+          "http://localhost:3000/api/v1/user/login",
+          formData
+        );
+        // console.log(resp.headers);
+        console.log("status code:", resp.status);
+        if (resp.status === 401) {
+          console.log("invalid user id password");
+          return;
+        }
+
+        const token = resp.headers.authorization.split(" ")[1];
+        const userid = resp.headers.userid;
+        const isadmin = resp.headers.isadmin;
+        setToken(token);
+        setUserid(userid);
+        setIsAdmin(isadmin);
+        navigate("/dashboard", { replace: true });
+      } catch {
+        console.log("invalid details");
+        navigate("/home", { replace: true });
+      }
       // setToken(token);
       // login({ token, userid, isadmin });
       // setUserid(resp.headers.userid);
@@ -55,7 +67,6 @@ const Login = () => {
       // if (isAdmin == "true") {
       //   navigate("/dashboard");
       // }
-      navigate("/dashboard", { replace: true });
       // navigate(from, { replace: true });
       // navigate(`http://localhost:3000/api/v1/user/${resp.headers.userid}`, { replace: true });
     }

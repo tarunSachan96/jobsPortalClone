@@ -13,6 +13,8 @@ import EmployeerTargetJob from "./component/EmployeerTargetJob";
 import EmployeerJobsPosted from "./component/EmployeerJobsPosted";
 import JobSeekerAllJobs from "./component/JobSeekerAllJobs";
 import EmpLayout from "./component/EmpLayout";
+import EmployeerDashboard from "./pages/EmployeerDashboard";
+import Error from "./pages/Error";
 const ROLES = {
   User: false,
   Admin: true,
@@ -25,11 +27,16 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Layout />}>
-          <Route path="home" element={<h1>Home page</h1>} />
+          <Route
+            path="home"
+            element={<h1>Will fetch all available jobs in future</h1>}
+          />
           <Route path="login" element={<Login />} />
           <Route path="signup" element={<Register />} />
           <Route path="logout" element={<Logout />} />
+          <Route path="welcome" element={<h1>Welcome Page</h1>} />
           <Route path="unauthorized" element={<h1>No access</h1>} />
+          <Route path="error" element={<Error />} />
           {/* Everybody can access with token */}
           <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}>
             <Route path="/dashboard" element={<h1> Homepage</h1>} />
@@ -38,8 +45,13 @@ function App() {
             <Route path="/jobseeker/alljobs" element={<JobSeekerAllJobs />} />
             <Route path="/employeer/" element={<EmpLayout />}>
               <Route path="details" element={<EmployeerDetails />} />
+              <Route
+                path="details/modify"
+                element={<h1>employee details modify page</h1>}
+              />
               <Route path="alljobs" element={<EmployeerJobsPosted />} />
               <Route path="jobs/:jobsid" element={<EmployeerTargetJob />} />
+              <Route path="dashboard" element={<EmployeerDashboard />} />
             </Route>
           </Route>
           {/* Employeer Roles */}
