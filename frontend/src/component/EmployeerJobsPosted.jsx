@@ -26,7 +26,7 @@ const EmployeerJobsPosted = () => {
   }, []);
   return (
     <>
-      <div>EmployeerDetails page</div>
+      <div>Employeer All Details page</div>
       <h1>{data.company}</h1>
     </>
   );

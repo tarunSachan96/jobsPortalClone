@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useAuth } from "./provider/authProvider";
+import { useState } from "react";
 import Login from "../src/pages/Login";
 import UserDetails from "./pages/UserDetails";
 import EmployeerDetails from "./pages/EmployeerDetails";
@@ -7,10 +8,11 @@ import Layout from "./component/Layout";
 import Register from "./pages/Register";
 import RequireAuth from "./component/RequireAuth";
 import Logout from "./pages/Logout";
-import Navbar from "./component/Navbar";
-import JobseekerDetails from "./pages/JobseekerDetails";
-import { useState } from "react";
+import JobseekerDetails from "./component/JobseekerDetails";
+import EmployeerTargetJob from "./component/EmployeerTargetJob";
 import EmployeerJobsPosted from "./component/EmployeerJobsPosted";
+import JobSeekerAllJobs from "./component/JobSeekerAllJobs";
+import EmpLayout from "./component/EmpLayout";
 const ROLES = {
   User: false,
   Admin: true,
@@ -31,9 +33,14 @@ function App() {
           {/* Everybody can access with token */}
           <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}>
             <Route path="/dashboard" element={<h1> Homepage</h1>} />
-            <Route path="/employeer/details" element={<EmployeerDetails />} />
-            <Route path="/employeer/jobs" element={<EmployeerJobsPosted />} />
+
             <Route path="/jobseeker/details" element={<JobseekerDetails />} />
+            <Route path="/jobseeker/alljobs" element={<JobSeekerAllJobs />} />
+            <Route path="/employeer/" element={<EmpLayout />}>
+              <Route path="details" element={<EmployeerDetails />} />
+              <Route path="alljobs" element={<EmployeerJobsPosted />} />
+              <Route path="jobs/:jobsid" element={<EmployeerTargetJob />} />
+            </Route>
           </Route>
           {/* Employeer Roles */}
           {/* {isAdmin && (
