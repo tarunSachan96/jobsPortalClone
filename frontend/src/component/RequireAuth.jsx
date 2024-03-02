@@ -7,33 +7,28 @@ const RequireAuth = ({ allowedRoles }) => {
   // console.log("allowed Roles", allowedRoles);
   // const isadmin = JSON.parse(isAdmin);
   // const tempisadmin = isadmin === "true";
-  console.log(
-    "isAdmin is type",
-    typeof isAdmin,
-    "its value is:",
-    isAdmin
-  );
-  console.log(
-    "allowedRoles is type",
-    typeof allowedRoles,
-    "its value is:",
-    allowedRoles
-  );
-
-  // return token ? (
-  //   <Outlet />
-  // ) : (
-  //   <Navigate to="/login" state={{ from: location }} replace />
+  // console.log("isAdmin is type", typeof isAdmin, "its value is:", isAdmin);
+  // console.log(
+  //   "allowedRoles is type",
+  //   typeof allowedRoles[0],
+  //   "its value is:",
+  //   allowedRoles[0]
   // );
+
   return token ? (
-    allowedRoles === isAdmin ? (
-      <Outlet />
-    ) : (
-      <Navigate to="/unauthorized" state={{ from: location }} replace />
-    )
+    <Outlet />
   ) : (
     <Navigate to="/login" state={{ from: location }} replace />
   );
+  // return isAdmin === allowedRoles[0] ? (
+  //   token ? (
+  //     <Outlet />
+  //   ) : (
+  //     <Navigate to="/unauthorized" state={{ from: location }} replace />
+  //   )
+  // ) : (
+  //   <Navigate to="/login" state={{ from: location }} replace />
+  // );
 };
 
 export default RequireAuth;

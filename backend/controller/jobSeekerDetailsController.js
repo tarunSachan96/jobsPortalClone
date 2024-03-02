@@ -1,6 +1,7 @@
 const UserDetails = require("../model/userDetails");
 const GetDetails = async (req, res) => {
   const { userid } = req.headers;
+  console.log(req.headers);
 
   const details = await UserDetails.findOne({ userid: userid }).populate({
     path: "appliedjobs",
@@ -9,7 +10,7 @@ const GetDetails = async (req, res) => {
     populate: {
       path: "creatorid",
       model: "employeerDetails",
-      select:"-userid -jobsid -updatedAt -_id -__v"
+      select: "-userid -jobsid -updatedAt -_id -__v",
     },
   });
   if (!details) {

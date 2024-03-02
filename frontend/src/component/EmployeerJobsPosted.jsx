@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../provider/authProvider";
 import axios from "axios";
-const EmployeerDetails = () => {
+
+const EmployeerJobsPosted = () => {
   const { token, userid } = useAuth();
-  const [data,setData]=useState("")
+  const [data, setData] = useState([]);
   const headers = {
     Authorization: `Bearer ${token}`,
     userid: userid,
@@ -13,19 +14,22 @@ const EmployeerDetails = () => {
     const fetchData = async () => {
       console.log("data fetching called");
       const data = await axios.get(
-        `http://localhost:3000/api/v1/user/admin/details/${userid}`,
+        `http://localhost:3000/api/v1/user/admin/jobsposted/jobs`,
         {
           headers,
         }
       );
-      console.log(data.data[0]);
-      setData(data.data[0]);
+      console.log(data.data);
+      setData(data.data);
     };
     fetchData();
   }, []);
-  return <><div>EmployeerDetails page</div>
-  <h1>{data.company}</h1>
-  </>;
+  return (
+    <>
+      <div>EmployeerDetails page</div>
+      <h1>{data.company}</h1>
+    </>
+  );
 };
 
-export default EmployeerDetails;
+export default EmployeerJobsPosted;

@@ -15,7 +15,7 @@ const Login = async (req, res) => {
       .status(StatusCodes.PRECONDITION_FAILED)
       .send("no used found with email");
   }
-  console.log(existingUser);
+  // console.log(existingUser);
 
   const matched = await bcrypt.compare(password, existingUser.password);
 

@@ -38,7 +38,7 @@ const Login = () => {
         "http://localhost:3000/api/v1/user/login",
         formData
       );
-      console.log(resp.headers);
+      // console.log(resp.headers);
       const token = resp.headers.authorization.split(" ")[1];
       const userid = resp.headers.userid;
       const isadmin = resp.headers.isadmin;
